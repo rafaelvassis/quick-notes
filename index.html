@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Quick Notes</title>
+  </head>
+  <body>
+    <main>
+      <h1>Quick Notes</h1>
+      <div class="container-principal">
+        <aside class="lado-input">
+          <form id="form-nota">
+            <label for="input-titulo">Título</label>
+            <input type="text" id="input-titulo" name="titulo" required />
+
+            <label for="select-categoria">Categoria</label>
+            <select id="select-categoria" name="categoria">
+              <option value="sem categoria">Sem categoria</option>
+              <option value="estudos">Estudos</option>
+              <option value="finanças">Finanças</option>
+              <option value="pessoal">Pessoal</option>
+              <option value="trabalho">Trabalho</option>
+              <option value="saúde">Saúde</option>
+              <option value="outros">Outros</option>
+            </select>
+
+            <label for="textarea-descricao">Descrição</label>
+            <textarea
+              id="textarea-descricao"
+              name="descricao"
+              rows="4"
+              maxlength="1000"
+              required
+            ></textarea>
+
+            <button id="btn-salvar" type="submit">Salvar Nota</button>
+          </form>
+
+          <!-- Área de mensagens (Ex: "Nota salva com sucesso!") -->
+          <div id="area-mensagens"></div>
+        </aside>
+        <section class="lado-output">
+          <h2>Minhas Notas</h2>
+          <!-- Seção lista de notas -->
+          <div id="lista-notas">
+            <!-- Conteúdo carregado pelo javaScript -->
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <p>Desenvolvido por Rafael Vassis</p>
+    </footer>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>
