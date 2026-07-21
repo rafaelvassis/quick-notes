@@ -5,7 +5,9 @@ html {
   box-sizing: border-box;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
   margin: 0;
   padding: 0;
@@ -16,7 +18,16 @@ html {
    ========================================================================== */
 html {
   font-size: 16px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    sans-serif;
 }
 
 h1 {
@@ -75,7 +86,9 @@ main {
   margin-bottom: 0.3rem;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
   padding: 0.8rem;
   border: 1px solid #ccc;
@@ -88,12 +101,121 @@ input, select, textarea {
 #lista-notas {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  justify-content: flex-start;
-  height: 100%;
-  align-items: center;
-  border: 1px solid;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
   overflow-y: auto;
+}
+
+/* Card da Nota */
+.card-nota {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 1.2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #ffffff;  
+  box-sizing: border-box;
+}
+
+/* Cabeçalho do Card */
+.card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 8px;
+}
+
+.card-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333333;
+  margin: 0;
+}
+
+/* Badges (Etiquetas) de Categoria e Data */
+.card-categoria,
+.card-data {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.card-categoria {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+}
+
+.card-data {
+  background-color: #f5f5f5;
+  color: #616161;
+}
+
+/* Corpo do Card */
+.card-descricao {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #555555;
+  white-space: pre-wrap; /* Preserva quebras de linha que o usuário digitar */
+  word-wrap: break-word; /* Evita que textos longos quebrem o layout */
+  margin: 0;
+}
+
+/* Rodapé do Card (Botões) */
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: auto;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 12px;
+}
+
+/* Botões do Card */
+.btn-alterar,
+.btn-deletar {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+.btn-alterar {
+  background-color: #f0f4f8;
+  color: #1a73e8;
+}
+
+.btn-alterar:hover {
+  background-color: #d2e3fc;
+}
+
+.btn-deletar {
+  background-color: #fce8e6;
+  color: #d93025;
+}
+
+.btn-deletar:hover {
+  background-color: #fad2cf;
+}
+
+/* Feedback de clique nos botões */
+.btn-alterar:active,
+.btn-deletar:active {
+  transform: scale(0.95);
 }
 
 /* ==========================================================================
