@@ -43,6 +43,18 @@ formulario.addEventListener("submit", (e) => {
   limparFormulario();
 });
 
+listaNotas.addEventListener("click", function (e) {
+  if (e.target.classList.contains("btn-deletar")) {
+    
+    const idParaExcluir = e.target.dataset.id;
+    
+    notas = excluirNota(notas, idParaExcluir);
+
+    salvarNotas(notas);
+    exibirNotas(notas);
+  }
+});
+
 // Funções auxiliáres
 function criarNota(titulo, categoria, descricao) {
   return new Nota(
@@ -52,6 +64,10 @@ function criarNota(titulo, categoria, descricao) {
     descricao,
     new Date().toLocaleDateString("pt-BR"),
   );
+}
+
+function excluirNota(notas, id) {
+  return notas.filter((nota) => nota.id !== id);
 }
 
 function limparFormulario() {
