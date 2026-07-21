@@ -4,12 +4,10 @@ const inputTitulo = document.getElementById("input-titulo");
 const selectCategorias = document.getElementById("select-categoria");
 const textAreaDescricao = document.getElementById("textarea-descricao");
 const btnSalvar = document.getElementById("btn-salvar");
-
 const areaMensagens = document.getElementById("area-mensagens");
-
 const listaNotas = document.getElementById("lista-notas");
 
-// Classe 
+// Classe padrão
 class Nota {
   constructor(id, titulo, categoria, descricao, dataCriacao) {
     this.id = id;
@@ -20,47 +18,60 @@ class Nota {
   }
 }
 
+// Memória provisória
 let notas = [];
 
-btnSalvar.addEventListener("submit", (e) => {
+// Eventos
+formulario.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  let titulo = inputTitulo.value;
-  let categoria = selectCategorias.value;
-  let descricao = textAreaDescricao.value;
-  let dataCriacao = new Date().toLocaleDateString("pt-BR");
-
-  let novaNota = new Nota(
-    crypto.randomUUID(),
-    titulo,
-    categoria,
-    descricao,
-    dataCriacao,
+  const novaNota = criarNota(
+    inputTitulo.value,
+    selectCategorias.value,
+    textAreaDescricao.value,
   );
 
   notas.push(novaNota);
 
-  inputTitulo.value = "";
-  selectCategorias.value = "sem categoria";
-  textAreaDescricao.value = "";
+  limparFormulario();
 
-
-  listaNotas.innerHTML += `
-        <article class="card-nota">
-        <div class="card-header">
-            <h3 class="card-titulo">${novaNota.titulo}</h3>
-            <span class="card-categoria">Categoria: ${novaNota.categoria}</span>
-            <span class="card-data">Criado em: ${novaNota.dataCriacao}</span>
-        </div>
-        
-        <p class="card-descricao">
-            ${novaNota.descricao}
-        </p>
-        
-        <div class="card-footer">
-            <button class="btn-alterar" data-id="${novaNota.id}">Alterar</button>
-            <button class="btn-deletar" data-id="${novaNota.id}">Excluir</button>
-        </div>
-        </article>
-    `;
+  exibirNotas(notas);
 });
+
+// Funções auxiliáres
+function criarNota(titulo, categoria, descricao) {
+  return new Nota(
+    crypto.randomUUID(),
+    titulo,
+    categoria,
+    descricao,
+    new Date().toLocaleDateString("pt-BR"),
+  );
+}
+
+function limparFormulario() {
+  inputTitulo.value = "";
+  selectCategorias.value = "Sem categoria";
+  textAreaDescricao.value = "";
+}
+
+function exibirNotas(notas) {
+  listaNotas.innerHTML = "";
+
+  notas.forEach((nota) => {
+    listaNotas.innerHTML += `
+      <article class="card-nota">
+        <div class="card-header">
+          <h3 class="card-titulo">${nota.titulo}</h3>
+          <span class="card-categoria">Categoria: ${nota.categoria}</span>
+          <span class="card-data">Criado em: ${nota.dataCriacao}</span>
+        </div>
+        <p class="card-descricao">${nota.descricao}</p>
+        <div class="card-footer">
+          <button class="btn-alterar" data-id="${nota.id}">Alterar</button>
+          <button class="btn-deletar" data-id="${nota.id}">Excluir</button>
+        </div>
+      </article>
+    `;
+  });
+}
