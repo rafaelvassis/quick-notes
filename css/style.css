@@ -22,3 +22,92 @@ html {
   padding: 0;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  align-items: center;
+  padding: 0.2rem;
+}
+
+main {
+  width: 100%;
+  padding: 1.5rem;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.container-principal {
+  display: flex;
+  gap: 2rem;
+  border: 1px solid;
+  padding: 2rem;
+  justify-content: space-around;
+}
+
+@media (max-width: 768px) {
+  .container-principal {
+    flex-direction: column;
+  }
+}
+
+.lado-input {
+  width: 100%;
+}
+
+.lado-output {
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+/* Formulário de Cadastro */
+#form-nota {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 0.3rem;
+}
+
+label {
+  font-size: 14px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: .8rem;
+  border: 1px solid;
+  font-size: 15px;
+}
+
+#btn-salvar {
+  border: none;
+  padding: .8rem;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+#lista-notas {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px, solid;
+  overflow-y: auto;
+}
+
+/* Rodapé */
+footer {
+  padding: 0.3rem 0 0.1rem 0;
+  font-size: 12px;
+  text-align: center;
+}
