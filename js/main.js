@@ -1,3 +1,5 @@
+import { recuperarNotas, salvarNotas } from "./services/notaService.js";
+
 // Elementos da página
 const formulario = document.getElementById("form-nota");
 const inputTitulo = document.getElementById("input-titulo");
@@ -18,8 +20,9 @@ class Nota {
   }
 }
 
-// Memória provisória
-let notas = [];
+// Carregamento inicial da página
+let notas = recuperarNotas();
+exibirNotas(notas);
 
 // Eventos
 formulario.addEventListener("submit", (e) => {
@@ -33,9 +36,11 @@ formulario.addEventListener("submit", (e) => {
 
   notas.push(novaNota);
 
-  limparFormulario();
+  salvarNotas(notas);
 
   exibirNotas(notas);
+
+  limparFormulario();
 });
 
 // Funções auxiliáres
