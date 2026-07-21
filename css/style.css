@@ -38,6 +38,7 @@ h1 {
 label {
   font-size: 14px;
   font-weight: 500;
+  margin-bottom: 4px;
 }
 
 /* ==========================================================================
@@ -46,34 +47,42 @@ label {
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh; /* Mantém o layout preso à altura da tela */
   align-items: center;
   padding: 0.2rem;
+  overflow: hidden; /* Impede que a página inteira role */
 }
 
 main {
   width: 100%;
   max-width: 1200px;
   padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Permite que os filhos respeitem o limite de altura */
 }
 
 .container-principal {
   display: flex;
   gap: 2rem;
-  border: 1px solid;
+  border: 1px solid #ccc;
   padding: 2rem;
   justify-content: space-around;
+  flex: 1;
+  min-height: 0; /* Evita o estouro vertical do container */
 }
 
 .lado-input {
-  width: 100%;
+  width: 40%; /* Define uma largura equilibrada para o formulário */
 }
 
 .lado-output {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  padding-bottom: 2rem;
+  width: 60%; /* Distribui melhor o espaço para os cards */
+  height: 100%;
+  min-height: 0;
 }
 
 /* ==========================================================================
@@ -93,10 +102,15 @@ textarea {
   padding: 0.8rem;
   border: 1px solid #ccc;
   font-size: 15px;
+  border-radius: 4px;
+}
+
+textarea {
+  resize: none; /* Impede o usuário de quebrar o layout arrastando o textarea */
 }
 
 /* ==========================================================================
-   5. Lista de Notas
+   5. Lista de Notas e Cards
    ========================================================================== */
 #lista-notas {
   display: flex;
@@ -107,7 +121,8 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f9f9f9;
-  overflow-y: auto;
+  flex: 1;
+  overflow-y: auto; /* Ativa a rolagem exclusivamente aqui dentro */
 }
 
 /* Card da Nota */
@@ -121,12 +136,13 @@ textarea {
   border-radius: 6px;
   background-color: #ffffff;  
   box-sizing: border-box;
+  flex-shrink: 0; /* IMPEDIR QUE OS CARDS SEJAM ESMAGADOS NA LISTA */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* Cabeçalho do Card */
 .card-header {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
@@ -139,6 +155,16 @@ textarea {
   font-weight: 600;
   color: #333333;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Corta títulos gigantes com "..." elegantemente */
+  max-width: 50%;
+}
+
+/* Sub-container para alinhar as tags no topo */
+.card-header div {
+  display: flex;
+  gap: 6px;
 }
 
 /* Badges (Etiquetas) de Categoria e Data */
@@ -148,6 +174,7 @@ textarea {
   padding: 4px 8px;
   border-radius: 4px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .card-categoria {
@@ -165,8 +192,8 @@ textarea {
   font-size: 0.95rem;
   line-height: 1.5;
   color: #555555;
-  white-space: pre-wrap; /* Preserva quebras de linha que o usuário digitar */
-  word-wrap: break-word; /* Evita que textos longos quebrem o layout */
+  white-space: pre-wrap; 
+  word-wrap: break-word; 
   margin: 0;
 }
 
@@ -212,7 +239,6 @@ textarea {
   background-color: #fad2cf;
 }
 
-/* Feedback de clique nos botões */
 .btn-alterar:active,
 .btn-deletar:active {
   transform: scale(0.95);
@@ -228,6 +254,13 @@ textarea {
   font-weight: bold;
   cursor: pointer;
   margin-top: 8px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+}
+
+#btn-salvar:hover {
+  background-color: #0056b3;
 }
 
 /* ==========================================================================
@@ -243,7 +276,30 @@ footer {
    8. Responsividade
    ========================================================================== */
 @media (max-width: 768px) {
+  body {
+    overflow: auto; /* Devolve a rolagem normal para telas pequenas */
+    height: auto;
+  }
+  
+  main {
+    height: auto;
+  }
+
   .container-principal {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .lado-input,
+  .lado-output {
+    width: 100%;
+  }
+  
+  #lista-notas {
+    max-height: 450px; /* Limita o tamanho da lista apenas no mobile */
+  }
+
+  .card-header{
     flex-direction: column;
   }
 }
