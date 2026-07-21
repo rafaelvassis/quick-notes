@@ -20,38 +20,67 @@ class Nota {
   }
 }
 
+let emEdicao = false;
+let idEmEdicao = "";
+
 // Carregamento inicial da página
 let notas = recuperarNotas();
-exibirNotas(notas);
+listarNotas(notas);
 
 // Eventos
 formulario.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const novaNota = criarNota(
-    inputTitulo.value,
-    selectCategorias.value,
-    textAreaDescricao.value,
-  );
+  if (emEdicao) {
+    notas = atualizarNota(
+      notas,
+      idEmEdicao,
+      inputTitulo.value,
+      selectCategorias.value,
+      textAreaDescricao.value,
+    );
 
-  notas.push(novaNota);
+    salvarNotas(notas);
+    listarNotas(notas);
 
-  salvarNotas(notas);
+    limparFormulario();
+  } else {
+    const novaNota = criarNota(
+      inputTitulo.value,
+      selectCategorias.value,
+      textAreaDescricao.value,
+    );
 
-  exibirNotas(notas);
+    notas.push(novaNota);
 
-  limparFormulario();
+    salvarNotas(notas);
+
+    listarNotas(notas);
+
+    limparFormulario();
+  }
 });
 
 listaNotas.addEventListener("click", function (e) {
   if (e.target.classList.contains("btn-deletar")) {
-    
     const idParaExcluir = e.target.dataset.id;
-    
+
     notas = excluirNota(notas, idParaExcluir);
 
     salvarNotas(notas);
-    exibirNotas(notas);
+    listarNotas(notas);
+  }
+});
+
+listaNotas.addEventListener("click", function (e) {
+  if (e.target.classList.contains("btn-alterar")) {
+    idEmEdicao = e.target.dataset.id;
+
+    exibirNota(notas, idEmEdicao);
+
+    emEdicao = true;
+
+    btnSalvar.innerText = "Atualizar";
   }
 });
 
@@ -66,17 +95,44 @@ function criarNota(titulo, categoria, descricao) {
   );
 }
 
+function atualizarNota(notas, id, titulo, categoria, descricao) {
+  return notas.map((nota) => {
+    if (nota.id === id) {
+      return {
+        ...nota,
+        titulo,
+        categoria,
+        descricao,
+      };
+    }
+    return nota;
+  });
+}
+
 function excluirNota(notas, id) {
   return notas.filter((nota) => nota.id !== id);
+}
+
+function exibirNota(notas, id) {
+  const notaEncontrada = notas.find((nota) => nota.id === id);
+
+  if (notaEncontrada) {
+    inputTitulo.value = notaEncontrada.titulo;
+    selectCategorias.value = notaEncontrada.categoria;
+    textAreaDescricao.value = notaEncontrada.descricao;
+  }
 }
 
 function limparFormulario() {
   inputTitulo.value = "";
   selectCategorias.value = "Sem categoria";
   textAreaDescricao.value = "";
+  emEdicao = false;
+  idEmEdicao = "";
+  btnSalvar.innerText = "Salvar";
 }
 
-function exibirNotas(notas) {
+function listarNotas(notas) {
   listaNotas.innerHTML = "";
 
   notas.forEach((nota) => {
