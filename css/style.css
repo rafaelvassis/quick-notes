@@ -1,27 +1,37 @@
-/* reset */
+/* ==========================================================================
+   1. Reset
+   ========================================================================== */
 html {
   box-sizing: border-box;
-  font-size: 16px;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    sans-serif;
 }
 
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   box-sizing: inherit;
   margin: 0;
   padding: 0;
 }
 
+/* ==========================================================================
+   2. Tipografia
+   ========================================================================== */
+html {
+  font-size: 16px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   3. Layout
+   ========================================================================== */
 body {
   display: flex;
   flex-direction: column;
@@ -32,12 +42,8 @@ body {
 
 main {
   width: 100%;
+  max-width: 1200px;
   padding: 1.5rem;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
 }
 
 .container-principal {
@@ -48,22 +54,20 @@ h1 {
   justify-content: space-around;
 }
 
-@media (max-width: 768px) {
-  .container-principal {
-    flex-direction: column;
-  }
-}
-
 .lado-input {
   width: 100%;
 }
 
 .lado-output {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   padding-bottom: 2rem;
 }
 
-/* Formulário de Cadastro */
+/* ==========================================================================
+   4. Formulário
+   ========================================================================== */
 #form-nota {
   display: flex;
   flex-direction: column;
@@ -71,43 +75,53 @@ h1 {
   margin-bottom: 0.3rem;
 }
 
-label {
-  font-size: 14px;
-}
-
-input,
-select,
-textarea {
+input, select, textarea {
   width: 100%;
-  padding: .8rem;
-  border: 1px solid;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
   font-size: 15px;
 }
 
+/* ==========================================================================
+   5. Lista de Notas
+   ========================================================================== */
+#lista-notas {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+  height: 100%;
+  align-items: center;
+  border: 1px solid;
+  overflow-y: auto;
+}
+
+/* ==========================================================================
+   6. Componentes
+   ========================================================================== */
 #btn-salvar {
   border: none;
-  padding: .8rem;
+  padding: 0.8rem;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
   margin-top: 8px;
 }
 
-#lista-notas {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: 100%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px, solid;
-  overflow-y: auto;
-}
-
-/* Rodapé */
+/* ==========================================================================
+   7. Rodapé
+   ========================================================================== */
 footer {
   padding: 0.3rem 0 0.1rem 0;
   font-size: 12px;
   text-align: center;
+}
+
+/* ==========================================================================
+   8. Responsividade
+   ========================================================================== */
+@media (max-width: 768px) {
+  .container-principal {
+    flex-direction: column;
+  }
 }
