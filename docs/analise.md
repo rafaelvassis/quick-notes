@@ -19,9 +19,9 @@
 
 ---
 
-## Requisitos
+# Requisitos
 
-### Funcionais
+## Funcionais
 
 | Código | Requisito |
 |:------:|-----------|
@@ -31,9 +31,10 @@
 | RF04 | Exibir todas as notas cadastradas. |
 | RF05 | Exibir título, descrição, categoria e data de criação da nota. |
 | RF06 | Persistir as notas utilizando LocalStorage. |
-| RF07 | Exibir as notas da mais recente para a mais antiga. |
+| RF07 | Recuperar automaticamente as notas salvas ao abrir a aplicação. |
+| RF08 | Exibir as notas da mais recente para a mais antiga. |
 
-### Não Funcionais
+## Não Funcionais
 
 | Código | Requisito |
 |:------:|-----------|
@@ -45,87 +46,89 @@
 
 ---
 
-## Responsabilidades
+# Responsabilidades
 
-### Tela
+## Main (Interface)
 
-- Exibir notas.
-- Receber as ações do usuário.
-- Acionar o gerenciamento das notas.
-- Exibir mensagens de sucesso ou erro.
+- Capturar eventos da interface.
+- Orquestrar o fluxo da aplicação.
+- Atualizar a interface.
+- Preencher e limpar o formulário.
+- Solicitar operações ao Gerenciador de Notas.
+- Solicitar persistência ao Serviço de Notas.
 
-### Gerenciador de Notas
+## Gerenciador de Notas
 
-- Criar nota.
-- Editar nota.
-- Excluir nota.
-- Validar os dados da nota.
+- Criar notas.
+- Atualizar notas.
+- Excluir notas.
+- Localizar notas.
+- Controlar o estado de edição.
 
-### Memória
+## Serviço de Persistência
 
-- Persistir notas.
-- Recuperar notas salvas.
+- Salvar notas no LocalStorage.
+- Recuperar notas do LocalStorage.
 
 ---
 
-## Arquitetura
+# Arquitetura
 
-A aplicação será organizada em responsabilidades.
+A aplicação foi organizada em camadas de responsabilidade.
 
-A tela (`main.js`) será responsável apenas por controlar o fluxo da aplicação e atualizar a interface.
+O `main.js` é responsável apenas pela interface e pelo fluxo da aplicação.
 
-A persistência das notas ficará isolada em um serviço (`notaService.js`), responsável pela comunicação com o LocalStorage.
+As regras relacionadas às notas foram concentradas em um Gerenciador de Notas (`notaManager.js`), evitando que a interface conheça detalhes da manipulação dos dados.
 
-As validações ficarão concentradas em funções utilitárias (`utils`), permitindo reutilização e manutenção simplificada.
+A persistência foi isolada em um serviço (`notaService.js`), responsável exclusivamente pela comunicação com o LocalStorage.
 
-Embora exista conceitualmente um "Gerenciador de Notas", nesta primeira versão optou-se por deixar essa responsabilidade concentrada no `main.js`, mantendo a arquitetura simples e compatível com o porte do projeto. Caso a aplicação cresça, essa responsabilidade poderá ser extraída para uma camada própria.
+Essa organização reduz o acoplamento entre interface, regras de negócio e persistência, facilitando manutenção e evolução da aplicação.
 
-Estrutura prevista:
+Estrutura atual:
 
 ```text
 js/
 │
 ├── main.js
 │
-├── services/
-│   └── notaService.js
+├── managers/
+│   └── notaManager.js
 │
-└── utils/
-    └── validarNota.js
+└── services/
+    └── notaService.js
 ```
 
 ---
 
-## Fluxo
+# Fluxo
 
 ```mermaid
 flowchart TB
 
 Inicio(Início)
-    --> Carregar[Carrega notas salvas]
+    --> Recuperar[Recupera notas do LocalStorage]
 
-Carregar
-    --> Interface[Exibe lista de notas]
+Recuperar
+    --> Renderizar[Renderiza lista de notas]
 
-Interface
-    --> Acao{Usuário}
+Renderizar
+    --> Espera[Aguarda interação]
 
-Acao -->|Criar| CriarNota
-Acao -->|Editar| EditarNota
-Acao -->|Excluir| ExcluirNota
+Espera -->|Criar| Criar
+Espera -->|Editar| Editar
+Espera -->|Excluir| Excluir
 
-CriarNota --> Validar
-EditarNota --> Validar
+Criar --> Manager
+Editar --> Manager
+Excluir --> Manager
 
-Validar{Dados válidos?}
+Manager[NotaManager]
 
-Validar -- Não --> Mensagem[Exibe mensagem de erro]
+Manager --> Persistencia[notaService]
 
-Validar -- Sim --> Salvar[Persistir no LocalStorage]
+Persistencia --> LocalStorage[(LocalStorage)]
 
-ExcluirNota --> Salvar
+Persistencia --> Atualizar[Atualiza Interface]
 
-Salvar --> Atualizar[Atualiza lista de notas]
-
-Atualizar --> Interface
+Atualizar --> Espera
 ```
