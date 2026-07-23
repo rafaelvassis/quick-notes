@@ -12,8 +12,10 @@ const btnSalvar = document.getElementById("btn-salvar");
 const listaNotas = document.getElementById("lista-notas");
 const areaMensagens = document.getElementById("area-mensagens");
 
-// Estado das notas
+// Estado da aplicação
 let notasArmazenadas = recuperarNotas();
+
+// Inicialização
 renderizarLista(notasArmazenadas);
 
 // Renderização Visual do DOM
@@ -51,9 +53,9 @@ function limparFormulario() {
   areaMensagens.innerText = "";
 }
 
-function atualizarPersistenciaETela() {
-  salvarNotas(notasArmazenadas);
-  renderizarLista(notasArmazenadas);
+function atualizarPersistenciaETela(notas) {
+  salvarNotas(notas);
+  renderizarLista(notas);
   limparFormulario();
 }
 
@@ -86,31 +88,31 @@ formulario.addEventListener("submit", (e) => {
     notasArmazenadas.push(novaNota);
   }
 
-  atualizarPersistenciaETela();
+  atualizarPersistenciaETela(notasArmazenadas);
 });
 
 listaNotas.addEventListener("click", function (e) {
   const idElemento = e.target.dataset.id;
 
   if (e.target.classList.contains("btn-deletar")) {
+    const idEmEdicao = NotaManager.getNotaEmEdicao();
+
     notasArmazenadas = NotaManager.excluirNota(notasArmazenadas, idElemento);
 
-    if (idElemento === NotaManager.getNotaEmEdicao()) {
+    if (idElemento === idEmEdicao) {
       NotaManager.pararEdicao();
     }
 
-    salvarNotas(notasArmazenadas);
-    renderizarLista(notasArmazenadas);
-    limparFormulario();
+    atualizarPersistenciaETela(notasArmazenadas);
   }
 
   if (e.target.classList.contains("btn-alterar")) {
     NotaManager.iniciarEdicao(idElemento);
     const nota = NotaManager.encontrarNota(notasArmazenadas, idElemento);
 
-    if (nota) {
-      preencherFormulario(nota);
-      btnSalvar.innerText = "Atualizar";
-    }
+    if (!nota) return;
+
+    preencherFormulario(nota);
+    btnSalvar.innerText = "Atualizar";
   }
 });
