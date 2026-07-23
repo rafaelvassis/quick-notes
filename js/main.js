@@ -1,5 +1,7 @@
 import { recuperarNotas, salvarNotas } from "./services/notaService.js";
 import * as NotaManager from "./managers/notaManager.js";
+import { validarNota } from "./utils/validarNota.js";
+import { normalizarString } from "./utils/normalizarString.js";
 
 // Elementos da página
 const formulario = document.getElementById("form-nota");
@@ -11,11 +13,11 @@ const listaNotas = document.getElementById("lista-notas");
 const areaMensagens = document.getElementById("area-mensagens");
 
 // Estado das notas
-let notas = recuperarNotas();
-renderizarLista();
+let notasArmazenadas = recuperarNotas();
+renderizarLista(notasArmazenadas);
 
 // Renderização Visual do DOM
-function renderizarLista() {
+function renderizarLista(notas) {
   listaNotas.innerHTML = "";
   notas.forEach((nota) => {
     listaNotas.innerHTML += `
@@ -46,11 +48,12 @@ function limparFormulario() {
   selectCategorias.value = "Sem categoria";
   NotaManager.pararEdicao();
   btnSalvar.innerText = "Salvar";
+  areaMensagens.innerText = "";
 }
 
 function atualizarPersistenciaETela() {
-  salvarNotas(notas);
-  renderizarLista();
+  salvarNotas(notasArmazenadas);
+  renderizarLista(notasArmazenadas);
   limparFormulario();
 }
 
@@ -59,22 +62,28 @@ formulario.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const idEdicao = NotaManager.getNotaEmEdicao();
+  const titulo = normalizarString(inputTitulo.value);
+  const descricao = normalizarString(textAreaDescricao.value);
+  const categoria = selectCategorias.value;
+
+  const validacao = validarNota(titulo, descricao);
+
+  if (!validacao.valido) {
+    areaMensagens.innerText = validacao.mensagem;
+    return;
+  }
 
   if (idEdicao) {
-    notas = NotaManager.atualizarNota(
-      notas,
+    notasArmazenadas = NotaManager.atualizarNota(
+      notasArmazenadas,
       idEdicao,
-      inputTitulo.value,
-      selectCategorias.value,
-      textAreaDescricao.value,
+      titulo,
+      categoria,
+      descricao,
     );
   } else {
-    const novaNota = NotaManager.criarNota(
-      inputTitulo.value,
-      selectCategorias.value,
-      textAreaDescricao.value,
-    );
-    notas.push(novaNota);
+    const novaNota = NotaManager.criarNota(titulo, categoria, descricao);
+    notasArmazenadas.push(novaNota);
   }
 
   atualizarPersistenciaETela();
@@ -84,20 +93,20 @@ listaNotas.addEventListener("click", function (e) {
   const idElemento = e.target.dataset.id;
 
   if (e.target.classList.contains("btn-deletar")) {
-    notas = NotaManager.excluirNota(notas, idElemento);
+    notasArmazenadas = NotaManager.excluirNota(notasArmazenadas, idElemento);
 
     if (idElemento === NotaManager.getNotaEmEdicao()) {
       NotaManager.pararEdicao();
     }
 
-    salvarNotas(notas);
-    renderizarLista();
+    salvarNotas(notasArmazenadas);
+    renderizarLista(notasArmazenadas);
     limparFormulario();
   }
 
   if (e.target.classList.contains("btn-alterar")) {
     NotaManager.iniciarEdicao(idElemento);
-    const nota = NotaManager.encontrarNota(notas, idElemento);
+    const nota = NotaManager.encontrarNota(notasArmazenadas, idElemento);
 
     if (nota) {
       preencherFormulario(nota);
