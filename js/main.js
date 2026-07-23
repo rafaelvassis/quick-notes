@@ -1,4 +1,5 @@
 import { recuperarNotas, salvarNotas } from "./services/notaService.js";
+import * as NotaManager from "./managers/notaManager.js";
 
 // Elementos da página
 const formulario = document.getElementById("form-nota");
@@ -6,130 +7,16 @@ const inputTitulo = document.getElementById("input-titulo");
 const selectCategorias = document.getElementById("select-categoria");
 const textAreaDescricao = document.getElementById("textarea-descricao");
 const btnSalvar = document.getElementById("btn-salvar");
-const areaMensagens = document.getElementById("area-mensagens");
 const listaNotas = document.getElementById("lista-notas");
+const areaMensagens = document.getElementById("area-mensagens");
 
-// Classe padrão
-class Nota {
-  constructor(id, titulo, categoria, descricao, dataCriacao) {
-    this.id = id;
-    this.titulo = titulo;
-    this.categoria = categoria;
-    this.descricao = descricao;
-    this.dataCriacao = dataCriacao;
-  }
-}
-
-let notaEmEdicao = null;
-
-// Carregamento inicial da página
+// Estado das notas
 let notas = recuperarNotas();
-listarNotas(notas);
+renderizarLista();
 
-// Eventos
-formulario.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  if (notaEmEdicao) {
-    notas = atualizarNota(
-      notas,
-      notaEmEdicao,
-      inputTitulo.value,
-      selectCategorias.value,
-      textAreaDescricao.value,
-    );
-
-    // Criar uma função separada para essa etapa?
-    salvarNotas(notas);
-    listarNotas(notas);
-    limparFormulario();
-  } else {
-    const novaNota = criarNota(
-      inputTitulo.value,
-      selectCategorias.value,
-      textAreaDescricao.value,
-    );
-
-    notas.push(novaNota);
-
-    // Criar uma função separada para essa etapa?
-    salvarNotas(notas);
-    listarNotas(notas);
-    limparFormulario();
-  }
-});
-
-listaNotas.addEventListener("click", function (e) {
-  if (e.target.classList.contains("btn-deletar")) {
-    const idParaExcluir = e.target.dataset.id;
-
-    notas = excluirNota(notas, idParaExcluir);
-
-    salvarNotas(notas);
-    listarNotas(notas);
-  }
-});
-
-listaNotas.addEventListener("click", function (e) {
-  if (e.target.classList.contains("btn-alterar")) {
-    notaEmEdicao = e.target.dataset.id;
-
-    exibirNota(notas, notaEmEdicao);
-
-    btnSalvar.innerText = "Atualizar";
-  }
-});
-
-// Funções auxiliáres
-function criarNota(titulo, categoria, descricao) {
-  return new Nota(
-    crypto.randomUUID(),
-    titulo,
-    categoria,
-    descricao,
-    new Date().toLocaleDateString("pt-BR"),
-  );
-}
-
-function atualizarNota(notas, id, titulo, categoria, descricao) {
-  return notas.map((nota) => {
-    if (nota.id === id) {
-      return {
-        ...nota,
-        titulo,
-        categoria,
-        descricao,
-      };
-    }
-    return nota;
-  });
-}
-
-function excluirNota(notas, id) {
-  return notas.filter((nota) => nota.id !== id);
-}
-
-function exibirNota(notas, id) {
-  const notaEncontrada = notas.find((nota) => nota.id === id);
-
-  if (notaEncontrada) {
-    inputTitulo.value = notaEncontrada.titulo;
-    selectCategorias.value = notaEncontrada.categoria;
-    textAreaDescricao.value = notaEncontrada.descricao;
-  }
-}
-
-function limparFormulario() {
-  inputTitulo.value = "";
-  selectCategorias.value = "Sem categoria";
-  textAreaDescricao.value = "";
-  notaEmEdicao = null;
-  btnSalvar.innerText = "Salvar";
-}
-
-function listarNotas(notas) {
+// Renderização Visual do DOM
+function renderizarLista() {
   listaNotas.innerHTML = "";
-
   notas.forEach((nota) => {
     listaNotas.innerHTML += `
       <article class="card-nota">
@@ -147,3 +34,74 @@ function listarNotas(notas) {
     `;
   });
 }
+
+function preencherFormulario(nota) {
+  inputTitulo.value = nota.titulo;
+  selectCategorias.value = nota.categoria;
+  textAreaDescricao.value = nota.descricao;
+}
+
+function limparFormulario() {
+  formulario.reset();
+  selectCategorias.value = "Sem categoria";
+  NotaManager.pararEdicao();
+  btnSalvar.innerText = "Salvar";
+}
+
+function atualizarPersistenciaETela() {
+  salvarNotas(notas);
+  renderizarLista();
+  limparFormulario();
+}
+
+// Eventos da aplicação
+formulario.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const idEdicao = NotaManager.getNotaEmEdicao();
+
+  if (idEdicao) {
+    notas = NotaManager.atualizarNota(
+      notas,
+      idEdicao,
+      inputTitulo.value,
+      selectCategorias.value,
+      textAreaDescricao.value,
+    );
+  } else {
+    const novaNota = NotaManager.criarNota(
+      inputTitulo.value,
+      selectCategorias.value,
+      textAreaDescricao.value,
+    );
+    notas.push(novaNota);
+  }
+
+  atualizarPersistenciaETela();
+});
+
+listaNotas.addEventListener("click", function (e) {
+  const idElemento = e.target.dataset.id;
+
+  if (e.target.classList.contains("btn-deletar")) {
+    notas = NotaManager.excluirNota(notas, idElemento);
+
+    if (idElemento === NotaManager.getNotaEmEdicao()) {
+      NotaManager.pararEdicao();
+    }
+
+    salvarNotas(notas);
+    renderizarLista();
+    limparFormulario();
+  }
+
+  if (e.target.classList.contains("btn-alterar")) {
+    NotaManager.iniciarEdicao(idElemento);
+    const nota = NotaManager.encontrarNota(notas, idElemento);
+
+    if (nota) {
+      preencherFormulario(nota);
+      btnSalvar.innerText = "Atualizar";
+    }
+  }
+});
