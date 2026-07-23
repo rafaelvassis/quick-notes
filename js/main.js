@@ -20,8 +20,7 @@ class Nota {
   }
 }
 
-let emEdicao = false;
-let idEmEdicao = "";
+let notaEmEdicao = null;
 
 // Carregamento inicial da página
 let notas = recuperarNotas();
@@ -31,18 +30,18 @@ listarNotas(notas);
 formulario.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  if (emEdicao) {
+  if (notaEmEdicao) {
     notas = atualizarNota(
       notas,
-      idEmEdicao,
+      notaEmEdicao,
       inputTitulo.value,
       selectCategorias.value,
       textAreaDescricao.value,
     );
 
+    // Criar uma função separada para essa etapa?
     salvarNotas(notas);
     listarNotas(notas);
-
     limparFormulario();
   } else {
     const novaNota = criarNota(
@@ -53,10 +52,9 @@ formulario.addEventListener("submit", (e) => {
 
     notas.push(novaNota);
 
+    // Criar uma função separada para essa etapa?
     salvarNotas(notas);
-
     listarNotas(notas);
-
     limparFormulario();
   }
 });
@@ -74,11 +72,9 @@ listaNotas.addEventListener("click", function (e) {
 
 listaNotas.addEventListener("click", function (e) {
   if (e.target.classList.contains("btn-alterar")) {
-    idEmEdicao = e.target.dataset.id;
+    notaEmEdicao = e.target.dataset.id;
 
-    exibirNota(notas, idEmEdicao);
-
-    emEdicao = true;
+    exibirNota(notas, notaEmEdicao);
 
     btnSalvar.innerText = "Atualizar";
   }
@@ -127,8 +123,7 @@ function limparFormulario() {
   inputTitulo.value = "";
   selectCategorias.value = "Sem categoria";
   textAreaDescricao.value = "";
-  emEdicao = false;
-  idEmEdicao = "";
+  notaEmEdicao = null;
   btnSalvar.innerText = "Salvar";
 }
 
