@@ -2,290 +2,303 @@
    RESET & VARIÁVEIS GLOBAIS
    ========================================================================== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 :root {
-    --bg-gradient: linear-gradient(135deg, #415b97 0%, #130f45 100%);
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --card-border: rgba(255, 255, 255, 0.1);
-    --text-primary: #f8fafc;
-    --text-secondary: #d9dee6;
-    --accent-color: #568ca5;
-    --accent-hover: #46ade5;
-    --danger-color: #ef4444;
-    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --bg-gradient: linear-gradient(135deg, #415b97 0%, #130f45 100%);
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #f8fafc;
+  --text-secondary: #d9dee6;
+  --accent-color: #568ca5;
+  --accent-hover: #46ade5;
+  --danger-color: #ef4444;
+  --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 body {
-    background: var(--bg-gradient);
-    color: var(--text-primary);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 1rem;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
 }
 
 /* ==========================================================================
    ESTRUTURA GERAL (Layout Flexbox/Grid)
    ========================================================================== */
 main {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  flex: 1;
 }
 
 main > h1 {
-    text-align: center;
-    font-size: 2.8rem;
-    font-weight: 800;
-    letter-spacing: -0.05em;
-    background: #ace0f8;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 2.5rem;
+  text-align: center;
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  background: #ace0f8;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2.5rem;
 }
 
 .container-principal {
-    display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 2.5rem;
-    align-items: start;
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2.5rem;
+  align-items: start;
 }
 
 @media (max-width: 900px) {
-    .container-principal {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-    }
+  .container-principal {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
 }
 
 /* ==========================================================================
    LADO ESQUERDO: ASIDE / FORMULÁRIO
    ========================================================================== */
 .lado-input {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--card-border);
-    border-radius: 16px;
-    padding: 1.5rem;
-    box-shadow: var(--shadow);
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
 }
 
 #form-nota {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #form-nota label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-secondary);
-    margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
 }
 
 #form-nota input,
 #form-nota select,
 #form-nota textarea {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    padding: 0.75rem;
-    color: var(--text-primary);
-    font-size: 0.95rem;
-    margin-bottom: 1.25rem;
-    outline: none;
-    transition: all 0.2s ease;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+  outline: none;
+  transition: all 0.2s ease;
 }
 
 #form-nota input:focus,
 #form-nota select:focus,
 #form-nota textarea:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
 
 #form-nota select option {
-    background: #1e1b4b;
-    color: var(--text-primary);
+  background: #1e1b4b;
+  color: var(--text-primary);
 }
 
 #form-nota textarea {
-    resize: vertical;
+  resize: vertical;
 }
 
 #btn-salvar {
-    background: var(--accent-color);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0.8rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.1s ease;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
 #btn-salvar:hover {
-    background: var(--accent-hover);
+  background: var(--accent-hover);
 }
 
 #btn-salvar:active {
-    transform: scale(0.98);
+  transform: scale(0.98);
 }
 
 #area-mensagens {
-    margin-top: 1rem;
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: 500;
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 /* ==========================================================================
    LADO DIREITO: SECTION / OUTPUT (Lista de Notas)
    ========================================================================== */
 .lado-output h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    border-bottom: 2px solid var(--card-border);
-    padding-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--card-border);
+  padding-bottom: 0.5rem;
 }
 
 #lista-notas {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
 /* ==========================================================================
    CARDS DE NOTAS
    ========================================================================== */
 .card-nota {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 14px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 220px;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .card-nota:hover {
-    transform: translateY(-4px);
-    border-color: rgba(99, 102, 241, 0.4);
-    box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15);
+  transform: translateY(-4px);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15);
 }
 
 .card-header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
 }
 
 .card-titulo {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    line-height: 1.3;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
 }
 
 .card-categoria {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    padding: 0.25rem 0.6rem;
-    border-radius: 6px;
-    width: fit-content;
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  width: fit-content;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
 }
-
 
 /* Como alternativa robusta para CSS puro, adicionamos cores elegantes padrões: */
 .card-categoria {
-    background: rgba(99, 102, 241, 0.15);
-    color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
 }
 
 .card-data {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.701);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.701);
 }
 
 .card-descricao {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-    margin-bottom: 1.5rem;
-    white-space: pre-wrap;
-    flex: 1;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  white-space: pre-wrap;
+  flex: 1;
 }
 
 .card-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding-top: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 0.75rem;
 }
 
 /* BOTÕES DE AÇÃO DO CARD */
-.btn-alterar, .btn-deletar {
-    padding: 0.45rem 0.9rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
+.btn-alterar,
+.btn-deletar {
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .btn-alterar {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: var(--text-primary);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
 }
 
 .btn-alterar:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .btn-deletar {
-    background: transparent;
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    color: var(--danger-color);
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: var(--danger-color);
 }
 
 .btn-deletar:hover {
-    background: var(--danger-color);
-    color: white;
-    border-color: var(--danger-color);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  background: var(--danger-color);
+  color: white;
+  border-color: var(--danger-color);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
 
 /* ==========================================================================
    FOOTER / RODAPÉ
    ========================================================================== */
 footer {
-    text-align: center;
-    padding: 2rem 0 1rem 0;
-    margin-top: 4rem;
-    border-top: 1px solid var(--card-border);
-    color: var(--text-secondary);
-    font-size: 0.85rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding: 2rem 0 1rem 0;
+  margin-top: 4rem;
+  border-top: 1px solid var(--card-border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.mascote {
+  width: 50px;
 }
