@@ -1,305 +1,291 @@
 /* ==========================================================================
-   1. Reset
+   RESET & VARIÁVEIS GLOBAIS
    ========================================================================== */
-html {
-  box-sizing: border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-  margin: 0;
-  padding: 0;
+:root {
+    --bg-gradient: linear-gradient(135deg, #415b97 0%, #130f45 100%);
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #f8fafc;
+    --text-secondary: #d9dee6;
+    --accent-color: #568ca5;
+    --accent-hover: #46ade5;
+    --danger-color: #ef4444;
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
-/* ==========================================================================
-   2. Tipografia
-   ========================================================================== */
-html {
-  font-size: 16px;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    sans-serif;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-label {
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-/* ==========================================================================
-   3. Layout
-   ========================================================================== */
 body {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; /* Mantém o layout preso à altura da tela */
-  align-items: center;
-  padding: 0.2rem;
-  overflow: hidden; /* Impede que a página inteira role */
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
 }
 
+/* ==========================================================================
+   ESTRUTURA GERAL (Layout Flexbox/Grid)
+   ========================================================================== */
 main {
-  width: 100%;
-  max-width: 1200px;
-  padding: 1.5rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0; /* Permite que os filhos respeitem o limite de altura */
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    flex: 1;
+}
+
+main > h1 {
+    text-align: center;
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    background: #ace0f8;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 2.5rem;
 }
 
 .container-principal {
-  display: flex;
-  gap: 2rem;
-  border: 1px solid #ccc;
-  padding: 2rem;
-  justify-content: space-around;
-  flex: 1;
-  min-height: 0; /* Evita o estouro vertical do container */
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 2.5rem;
+    align-items: start;
 }
 
+@media (max-width: 900px) {
+    .container-principal {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+/* ==========================================================================
+   LADO ESQUERDO: ASIDE / FORMULÁRIO
+   ========================================================================== */
 .lado-input {
-  width: 40%; /* Define uma largura equilibrada para o formulário */
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
 }
 
-.lado-output {
-  display: flex;
-  flex-direction: column;
-  width: 60%; /* Distribui melhor o espaço para os cards */
-  height: 100%;
-  min-height: 0;
-}
-
-/* ==========================================================================
-   4. Formulário
-   ========================================================================== */
 #form-nota {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 0.3rem;
+    display: flex;
+    flex-direction: column;
 }
 
-input,
-select,
-textarea {
-  width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ccc;
-  font-size: 15px;
-  border-radius: 4px;
+#form-nota label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: 0.4rem;
 }
 
-textarea {
-  resize: none; /* Impede o usuário de quebrar o layout arrastando o textarea */
+#form-nota input,
+#form-nota select,
+#form-nota textarea {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+    outline: none;
+    transition: all 0.2s ease;
 }
 
-/* ==========================================================================
-   5. Lista de Notas e Cards
-   ========================================================================== */
-#lista-notas {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  flex: 1;
-  overflow-y: auto; /* Ativa a rolagem exclusivamente aqui dentro */
+#form-nota input:focus,
+#form-nota select:focus,
+#form-nota textarea:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
 
-/* Card da Nota */
-.card-nota {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  padding: 1.2rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  background-color: #ffffff;  
-  box-sizing: border-box;
-  flex-shrink: 0; /* IMPEDIR QUE OS CARDS SEJAM ESMAGADOS NA LISTA */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+#form-nota select option {
+    background: #1e1b4b;
+    color: var(--text-primary);
 }
 
-/* Cabeçalho do Card */
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  border-bottom: 1px solid #f0f0f0;
-  padding-bottom: 8px;
+#form-nota textarea {
+    resize: vertical;
 }
 
-.card-titulo {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #333333;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; /* Corta títulos gigantes com "..." elegantemente */
-  max-width: 50%;
-}
-
-/* Sub-container para alinhar as tags no topo */
-.card-header div {
-  display: flex;
-  gap: 6px;
-}
-
-/* Badges (Etiquetas) de Categoria e Data */
-.card-categoria,
-.card-data {
-  font-size: 0.75rem;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.card-categoria {
-  background-color: #e3f2fd;
-  color: #0d47a1;
-}
-
-.card-data {
-  background-color: #f5f5f5;
-  color: #616161;
-}
-
-/* Corpo do Card */
-.card-descricao {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #555555;
-  white-space: pre-wrap; 
-  word-wrap: break-word; 
-  margin: 0;
-}
-
-/* Rodapé do Card (Botões) */
-.card-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: auto;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 12px;
-}
-
-/* Botões do Card */
-.btn-alterar,
-.btn-deletar {
-  padding: 6px 12px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
-}
-
-.btn-alterar {
-  background-color: #f0f4f8;
-  color: #1a73e8;
-}
-
-.btn-alterar:hover {
-  background-color: #d2e3fc;
-}
-
-.btn-deletar {
-  background-color: #fce8e6;
-  color: #d93025;
-}
-
-.btn-deletar:hover {
-  background-color: #fad2cf;
-}
-
-.btn-alterar:active,
-.btn-deletar:active {
-  transform: scale(0.95);
-}
-
-/* ==========================================================================
-   6. Componentes
-   ========================================================================== */
 #btn-salvar {
-  border: none;
-  padding: 0.8rem;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 8px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
 #btn-salvar:hover {
-  background-color: #0056b3;
+    background: var(--accent-hover);
+}
+
+#btn-salvar:active {
+    transform: scale(0.98);
+}
+
+#area-mensagens {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 /* ==========================================================================
-   7. Rodapé
+   LADO DIREITO: SECTION / OUTPUT (Lista de Notas)
+   ========================================================================== */
+.lado-output h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--card-border);
+    padding-bottom: 0.5rem;
+}
+
+#lista-notas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* ==========================================================================
+   CARDS DE NOTAS
+   ========================================================================== */
+.card-nota {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-nota:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15);
+}
+
+.card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+.card-titulo {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.card-categoria {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    width: fit-content;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+
+/* Como alternativa robusta para CSS puro, adicionamos cores elegantes padrões: */
+.card-categoria {
+    background: rgba(99, 102, 241, 0.15);
+    color: #a5b4fc;
+}
+
+.card-data {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.701);
+}
+
+.card-descricao {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    white-space: pre-wrap;
+    flex: 1;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 0.75rem;
+}
+
+/* BOTÕES DE AÇÃO DO CARD */
+.btn-alterar, .btn-deletar {
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-alterar {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-primary);
+}
+
+.btn-alterar:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-deletar {
+    background: transparent;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: var(--danger-color);
+}
+
+.btn-deletar:hover {
+    background: var(--danger-color);
+    color: white;
+    border-color: var(--danger-color);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* ==========================================================================
+   FOOTER / RODAPÉ
    ========================================================================== */
 footer {
-  padding: 0.3rem 0 0.1rem 0;
-  font-size: 12px;
-  text-align: center;
-}
-
-/* ==========================================================================
-   8. Responsividade
-   ========================================================================== */
-@media (max-width: 768px) {
-  body {
-    overflow: auto; /* Devolve a rolagem normal para telas pequenas */
-    height: auto;
-  }
-  
-  main {
-    height: auto;
-  }
-
-  .container-principal {
-    flex-direction: column;
-    padding: 1rem;
-  }
-
-  .lado-input,
-  .lado-output {
-    width: 100%;
-  }
-  
-  #lista-notas {
-    max-height: 450px; /* Limita o tamanho da lista apenas no mobile */
-  }
-
-  .card-header{
-    flex-direction: column;
-  }
+    text-align: center;
+    padding: 2rem 0 1rem 0;
+    margin-top: 4rem;
+    border-top: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
 }
